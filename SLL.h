@@ -65,4 +65,5 @@ class SLList
         void printAll();
         bool isInList(T el);
         void deleteEl(T el);
+        void swap(T val1,T val2);
 };
