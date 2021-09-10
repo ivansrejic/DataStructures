@@ -9,10 +9,11 @@ unsigned int hashCode(double d) //
     else
         {
             int exponent;
-            double mantissa = frexp(d,&mantissa);
-            return (unsigned int)(2* fabs(mantissa) - 1)* ~0U;
+            double mantissa = frexp(d,&mantissa); // frexp vraca mantisu uvek u opsegu od 0.5 do skoro 1.  (0.1xxxxx)2 = (0.5xxxx)10 
+            return (unsigned int)(2* fabs(mantissa) - 1)* ~0U; // prvi deo svodi na 2*fabs mantisa,opseg od 1 do skoro 2, pa minus jedan, opseg od 0-1 . * sve jedinice
+            // to nam daje broj u opsegu od 0 do 2^32-1 .
         }
-}
+};
 
 unsigned int hashCode(char* s)
 {
@@ -83,7 +84,7 @@ class HashObject
         {
             std::cout<<key<<"|"<<record;
         }
-}
+};
 
 template<class T,class R>
 class HashTable
@@ -137,7 +138,7 @@ class HashTable
         {
             return (double)count/(double)lenght;
         }   
-}
+};
 
 template<class T,class R>
 class ChainedHashTable : public HashTable<T,R>
@@ -193,7 +194,7 @@ class ChainedHashTable : public HashTable<T,R>
                 obj = array[i].getNextEl(obj);
             return obj;
         }
-}
+};
 template<class T,class R>
 class ScatterObject : public HashObject<T,R>
 {
@@ -212,7 +213,7 @@ class ScatterObject : public HashObject<T,R>
         {
             status = 0;
         }
-}
+};
 
 template<class T,class R>
 class ChainedScatterObject : public ScatterObject<T,R>
@@ -237,7 +238,7 @@ class ChainedScatterObject : public ScatterObject<T,R>
             next = n;
         }
 
-}
+};
 
 template<class T,class R>
 class ChainedScatterTable : public HashTable<T,R>
@@ -255,4 +256,28 @@ class ChainedScatterTable : public HashTable<T,R>
         {
             delete []array;
         }
-}
+        void insert(ChainedScatterObject<T,R> obj)
+        {
+            if(count == getLenght())
+                throw new SBPExcpetion("The table is full");
+            long probe = h(obj);
+            if(!array[probe].free)
+            {
+                while(array[probe].next != -1)
+                    {
+                        probe = array[probe].next;
+                    }
+                long tail = probe;
+                probe = g(probe);
+                while(!array[probe].free && probe != tail)
+                    probe = g(probe);
+                if(probe == tail)
+                    throw new SBPException("Poor secondary transformation");
+                array[tail].next = probe;
+            }
+            array[probe] = obj;
+            array[probe].status = 2; //zauzet
+            array[probe].next = -1;
+            count++;
+        }
+};
