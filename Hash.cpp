@@ -1,3 +1,4 @@
+#pragma once 
 #include<iostream>
 #include<math.h>  
 #include<SLL.h> 
@@ -172,7 +173,7 @@ class ChainedHashTable : public HashTable<T,R>
         }
         void insert(HashObject<T,R> obj)
         {
-            array[h[obj]].addToHead(obj);
+            array[h[obj]].addToHead(obj); //ovo h bi trebalo da bude neka hash funkcija
             count++;
         }
         void withdraw(HashObject<T,R> obj)
