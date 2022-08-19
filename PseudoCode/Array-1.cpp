@@ -1,5 +1,4 @@
 //Obilazak polja
-
 arrayTraversal(A,d,g)
 k <- d // index prvog elementa
 while (k <= g)
@@ -9,7 +8,6 @@ return
 
 
 //Linearno trazenje
-
 arrayLinearSearch(A,n,E)
 // A je array od n elemenata
 //LOC je lokacija nadjenog elementa ili NULL ako nije pronadjen element
@@ -20,7 +18,6 @@ return LOC
 
 
 //Binarno trazenje
-
 arrayBinarySearch(A,dg,gg,E)
 d <- dg, g <- gg, s <- (d+g)/2
 while(d<=g and A[s] != E)
@@ -47,7 +44,6 @@ return
 
 
 //Insert element
-
 arrayInsertAt(A,n,k,E)
 // Ovaj algoritam umeće novi element E // u polje A od n elemenata na poziciju k
 j <- n // indeks poslednjeg elementa polje
