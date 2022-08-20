@@ -100,3 +100,115 @@ i za koje važi:
 Vrednost čvora je
     -veća od svih vrednosti levog podstabla i
     -manja ili jednaka od vrednosti desnog podstabla
+
+//dodavanje
+Tree-Insert(T, z)
+y <- null
+x <- root(T) 
+while (x != null)
+    y <- x
+    if (key(z) < key(x))
+        then x <- left(x)
+    else x <- right(x) 
+end while
+p(z) <- y //p-roditeljski čvor 
+if (y = null)
+    then root(T) <- z 
+else if key(z) < key(y)
+    then left(y) <- z 
+    else right(y) <- z
+
+//trazenje rekurzivno
+Tree-Search(x, k)
+if (x = null or k = key(x))
+    then return x
+if (k < key(x))
+    then return Tree-Search(left(x), k)
+    else return Tree-Search(right(x), k)
+
+//trazenje iterativno
+Iterative-Tree-Search(x, k)
+while (x != null and k != key(x))
+    if (k < key(x))
+        then x <- left(x) 
+        else x <- right(x)
+return x
+
+//Brisanje
+-Naći čvor N i čvor ROD
+-Obrisati čvor N na sledeći način:
+Slučaj 1 ( Brisanje iz lista): 
+null -> ROD.link(N)
+// link na N roditelja se postavlja na null
+Slučaj 2 (brisanje čvora koji ima 1 dete): 
+N.link(D) -> ROD.link(N)
+// u roditeljski čvor čvora N se postavlja
+// link na dete čvora N
+Slučaj 3 (brisanje čvora sa 2 deteta):
+Naći čvor S (inorder sledbenik čvora N) Obrisati čvor S korišćenjem slučaja 1 ili 2 S→ROD.link(N)
+// u roditeljski čvor čvora N se postavlja
+// link na inorder sledbenika čvora N
+
+
+//HEAP 
+Heap je gotovo kompletno binarno stablo koje čuva vednosti u čvorovima i koje zadovoljava osobine tzv Heap-order:
+    Minheap:
+        key(v)  key(parent(v)) // LIST IMA NAJVECU VREDNOST 
+    Maxheap:
+        key(v)  key(parent(v)) // KOREN IMA NAJVECU VREDNOST
+
+// NE KORISTI SE INDEX 0, novi element se dodaje na poziciju n+1 , parent sa indexom i ima decu , levo sa indexom 2i , desno 2i + 1 
+
+//Dodavanje elementa min-gomili
+InsertHeap(h,n,e)
+//h – gomila (heap), n – broj elemenata gomile, e – novi element
+n <- n+1, ptr <- n // lokacija novog elementa
+repeat while (ptr>1) {
+    //nalaženje lokacije elementa e
+    rod <- [ptr/2]//donja granica ptr/2 
+    if(e <= h(rod)) 
+        then h(ptr) <- e
+        return
+    h(ptr) <- h(rod) // pomeranje čvora naniže
+    ptr <- rod // ažuriranje ptr
+    end repreat
+    h(1) <- e
+    return 
+}
+
+//Brisanje 
+DeleteHeap(h,n,e)
+/* h – heap, n – broj el. gomile, e – obrisani el., posl - vrednost iz poslednjeg elem. Gomile, ptr - lokacija poslednjeg elementa, levo i desno – deca posl. elementa gomile */
+e <- h[1] // uklanjanje korena gomile
+posl <- h[n]; n ← n-1 // brisanje posl. elementa
+if (n=0) then return //brisanje jedinog elem. gomile 
+ptr ← 1; levo ← 2; desno ← 3 // inicijalizacija 
+repeat while (desno<=n)
+//nalazenje prave lokacije elementa
+if (posl>h[levo] and posl>= h[desno]) 
+    then {h[ptr] ← posl; return}
+if (h[desno]<=h[levo])
+    then {h[ptr] ← h[levo]; ptr ← levo} 
+    else {h[ptr] ← h[desno]; ptr ← desno }
+levo ← 2*ptr; desno ← levo + 1
+end repeat
+if (levo = n) and if(posl < h[levo]) then ptr ← levo 
+h[ptr] ← posl
+return
+//NEMAM POJMA KAKO RADI OVAJ ALGORITAM , PROUCI GA 
+
+
+//HEAP SORT 
+heapSort(a,n)
+// sortira polje a od n elemenata
+// formiranje min ili max gomile od elemenata polja a
+repeat for j=1,n-1
+    call insertHeap(a,j,a[j+1])
+// sortiranje brisanjem korena gomile dok se gomila ne isprazni
+repeat while n>1
+    call deleteHeap(a,n,e) 
+    a[n+1] = e
+exit
+
+
+
