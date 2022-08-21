@@ -3,7 +3,7 @@
 template<class T,class W>
 class Edge; // da mozemo da koristimo Edge direktno u cpp
 class LinkedNode // Node -> cvor
-    public:
+{    public:
         T node;
         Edge<T,W>* adj;
         LinkedNode<T,W>* next;
